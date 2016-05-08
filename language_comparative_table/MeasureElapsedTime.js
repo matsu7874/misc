@@ -1,11 +1,19 @@
 function DoSomething() {
-    var a;
-    for (var i = 0; i < 1000000000; ++i)
+    var a=0;
+    for (var i = 0; i < 1000000; ++i){
         ++a;
+    }
+    return a;
 }
 
-var start = new Date().getTime();
+function measureElapsedTime(func){
+    var start = new Date().getTime();
 
-DoSomething();
-var end = new Date().getTime();
-console.log("Elapsed Time: " + (end - start) + "[ms]");
+    var res = func();
+
+    var end = new Date().getTime();
+    console.log("Elapsed Time: " + (end - start) + "[ms]");
+    console.log(res);
+}
+
+measureElapsedTime(DoSomething);

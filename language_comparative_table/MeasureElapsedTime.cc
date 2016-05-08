@@ -5,18 +5,29 @@ long DoSomething(){
     long a=0;
     for(int i = 0; i<1000000000; ++i){
         ++a;
+        if(a%2 == 0){
+            a /= 2;
+        }else{
+            a = a * 3 + 1;
+        }
     }
     return a;
 }
 
-int main(){
-    std::chrono::system_clock::time_point  start, end; // 型は auto で可
-    start = std::chrono::system_clock::now(); // 計測開始時間
 
-    DoSomething();
+template<class F>
+void MeasureElapsedTime(F func){
+    std::chrono::system_clock::time_point  start, end;
+    start = std::chrono::system_clock::now();
 
-    end = std::chrono::system_clock::now();  // 計測終了時間
-    double elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end-start).count(); //処理に要した時間をミリ秒に変換
+    auto res = func();
+
+    end = std::chrono::system_clock::now();
+    double elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end-start).count();
     std::cout << "Elapsed Time: " << elapsed << "[ms]" << std::endl;
+    std::cout << res << std::endl;
+}
 
+int main(){
+    MeasureElapsedTime(DoSomething);
 }
