@@ -1,4 +1,4 @@
-var DATA = require('./data.js');
+var DATA = require("./data.js");
 
 function nlp00(){
     var s = "stressed";
@@ -33,14 +33,101 @@ function nlp02(){
     return res;
 }
 function nlp03(){
+    var s = "Now I need a drink, alcoholic of course, " +
+    "after the heavy lectures involving quantum mechanics.";
+    var words = s.replace(/\./g,"").replace(/,/g,"").split(" ");
+    // 文字列中の全ての一致パターンを置換するときは正規表現のglobalマッチ(g)
+    // .は正規表現ではエスケープが必要
+    var res = [];
+    for(var i=0; i < words.length; ++i){
+        res.push(words[i].length);
+    }
+    return res;
 }
 function nlp04(){
+    var s = "Hi He Lied Because Boron Could Not Oxidize Fluorine. " +
+    "New Nations Might Also Sign Peace Security Clause. Arthur King Can.";
+    var words = s.replace(/\./g,"").replace(/,/g,"").split(" ");
+    var res = {};
+    var shorts = [1, 5, 6, 7, 8, 9, 15, 16, 19];
+    for(var i=0; i<words.length; ++i){
+        res[words[i].substr(0,(shorts.indexOf(i+1)===-1)+1)] = i+1;
+    }
+    return res;
 }
+
+function nGram(seq, n){
+    //seqは文字列 or Array。どちらも同様の挙動をするsliceがある。
+    var res = [];
+    for(var i=0; i<seq.length-n+1; ++i){
+        res.push(seq.slice(i,i+n));
+    }
+    return res;
+}
+
 function nlp05(){
-    return "";
+    var s = "I am an NLPer";
+    var res = {};
+    res["Character-N-gram"] = nGram(s,2);
+    var words = s.replace(/\./g,"").replace(/,/g,"").split(" ");
+    res["Word-N-gram"] = nGram(words,2);
+    return res;
 }
+
+function set(a){
+    // O(|a| * log|a|)
+    if (a.length === 0){
+        return [];
+    }
+    a.sort(function(a, b){
+        if( a < b ) return -1;
+        if( a > b ) return 1;
+        return 0;
+    });
+    var res = [a[0]];
+    for(var i=1; i<a.length; ++i){
+        if (a[i-1] < a[i]){
+            res.push(a[i]);
+        }
+    }
+    return res;
+}
+
+function union(a, b){
+    // ((|a|+|b|) * log(|a|+|b|))
+    var tmp = [];
+    a = set(a);
+    b = set(b);
+    for(var i=0; i<a.length; ++i){
+        tmp.push(a[i]);
+    }
+    for(var i=0; i<b.length; ++i){
+        tmp.push(b[i]);
+    }
+    if(tmp.length === 0){
+        return [];
+    }
+    tmp.sort(function(a, b){
+        if( a < b ) return -1;
+        if( a > b ) return 1;
+        return 0;
+    });
+    var res = [tmp[0]];
+    for(var i=1; i<tmp.length; ++i){
+        if (tmp[i-1] < tmp[i]){
+            res.push(tmp[i]);
+        }
+    }
+    return res;
+}
+
 function nlp06(){
-    return "";
+    var s = "paraparaparadise";
+    var t =  "paragraph";
+    var X = nGram(s, 2);
+    var Y = nGram(t, 2);
+
+    return union(X,Y);
 }
 function nlp07(){
     return "";
