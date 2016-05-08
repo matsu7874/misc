@@ -77,3 +77,54 @@ JSもPythonの25倍速い!
 |JS|3646|0.0396|
 
 これは強い人がC++を使うのも全くよく分かります。
+
+## 追記
+関数を渡すと実行時間と戻り値を表示してくれる関数にした方が使いやすいので、書き換えました。
+
+``` python
+def measure_elapsed_time(func):
+    START_TIME = time.time()
+
+    res = func()
+
+    ELAPSED_TIME = time.time() - START_TIME
+
+    print('Elapsed Time:', ELAPSED_TIME*1000 ,'[ms]')
+    print(res)
+
+if __name__ == '__main__':
+    measure_elapsed_time(DoSomething)
+```
+
+``` cpp
+template<class F>
+void MeasureElapsedTime(F func){
+    std::chrono::system_clock::time_point  start, end;
+    start = std::chrono::system_clock::now();
+
+    auto res = func();
+
+    end = std::chrono::system_clock::now();
+    double elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end-start).count();
+    std::cout << "Elapsed Time: " << elapsed << "[ms]" << std::endl;
+    std::cout << res << std::endl;
+}
+
+int main(){
+    MeasureElapsedTime(DoSomething);
+}
+```
+
+``` javascript
+function measureElapsedTime(func){
+    var start = new Date().getTime();
+
+    var res = func();
+
+    var end = new Date().getTime();
+    console.log("Elapsed Time: " + (end - start) + "[ms]");
+    console.log(res);
+}
+
+measureElapsedTime(DoSomething);
+```
