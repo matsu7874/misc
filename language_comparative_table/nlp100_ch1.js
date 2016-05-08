@@ -121,19 +121,113 @@ function union(a, b){
     return res;
 }
 
+function intersection(a, b){
+    // O(max(|a|*log|a|, |b|*log|b|))
+    a = set(a);
+    b = set(b);
+    if(a.length > b.length){
+        var tmp = b;
+        b = a;
+        a = tmp;
+    }
+    var res = [];
+    for(var i=1; i<a.length; ++i){
+        var l = 0;
+        var r = b.length;
+        while(l+1 < r){
+            var m = Math.floor((l+r)/2);
+            if(b[m] < a[i]){
+                l = m;
+            }else if(b[m] === a[i]){
+                res.push(a[i]);
+                break;
+            }else{
+                r = m;
+            }
+        }
+    }
+    return res;
+}
+
+function difference(a, b){
+    // O(max(|a|*log|a|, |b|*log|b|))
+    a = set(a);
+    b = set(b);
+    var res = [];
+    for(var i=0; i<a.length; ++i){
+        var l = 0;
+        var r = b.length;
+        var flg = true;
+        while(l+1 < r){
+            var m = Math.floor((l+r)/2);
+            if(b[m] < a[i]){
+                l = m;
+            }else if(b[m] === a[i]){
+                flg = false;
+                break;
+            }else{
+                r = m;
+            }
+        }
+        if(flg){
+            res.push(a[i]);
+        }
+    }
+    return res;
+}
+
+function isContain(a, v){
+    a = set(a);
+    var l = 0;
+    var r = a.length;
+    while(l+1 < r){
+        var m = Math.floor((l+r)/2);
+        if(a[m] < v){
+            l = m;
+        }else if(a[m] === v){
+            return true;
+        }else{
+            r = m;
+        }
+    }
+    return false;
+}
+
 function nlp06(){
     var s = "paraparaparadise";
     var t =  "paragraph";
-    var X = nGram(s, 2);
-    var Y = nGram(t, 2);
-
-    return union(X,Y);
+    var X = set(nGram(s, 2));
+    var Y = set(nGram(t, 2));
+    var res = {};
+    res.union = union(X, Y);
+    res.intersection = intersection(X, Y);
+    res.differenceX = difference(X, Y);
+    res.differenceY = difference(Y, X);
+    res.isContainX = isContain(X, "se");
+    res.isContainY = isContain(Y, "se");
+    return res;
 }
 function nlp07(){
-    return "";
+    function nlp07Template(x,y,z){
+        return x + "時の" + y + "は" + z;
+    }
+    return nlp07Template(12,"気温",22.4);
 }
 function nlp08(){
-    return "";
+    function cipher(s){
+        var res = [];
+        for(var i=0; i<s.length; ++i){
+            var code = s[i].charCodeAt(0);
+            if(97 <= code && code <= 122){
+                res.push(String.fromCharCode(219 - code));
+            }else{
+                res.push(s[i]);
+            }
+        }
+        return res.join("");
+    }
+    var s = "日本は very very Japan. Arigatou gozaimasu";
+    return [cipher(s),cipher(cipher(s))];
 }
 function nlp09(){
     return "";
