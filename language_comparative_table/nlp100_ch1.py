@@ -84,14 +84,18 @@ def nlp_09():
     return typoglycemia(s)
 
 
+def measure_elapsed_time(func):
+    import time
+    START_TIME = time.time()
+
+    res = func()
+
+    ELAPSED_TIME = time.time() - START_TIME
+
+    print('Elapsed Time:', ELAPSED_TIME * 1000, '[ms]')
+    print(res)
+
 if __name__ == '__main__':
-    print(nlp_00())
-    print(nlp_01())
-    print(nlp_02())
-    print(nlp_03())
-    print(nlp_04())
-    print(nlp_05())
-    print(nlp_06())
-    print(nlp_07())
-    print(nlp_08())
-    print(nlp_09())
+    for f in [nlp_00, nlp_01, nlp_02, nlp_03, nlp_04, nlp_05, nlp_06, nlp_07, nlp_08, nlp_09]:
+        measure_elapsed_time(f)
+        print()
