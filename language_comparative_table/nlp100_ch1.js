@@ -230,7 +230,38 @@ function nlp08(){
     return [cipher(s),cipher(cipher(s))];
 }
 function nlp09(){
-    return "";
+    function shuffle(s){
+        var res = [];
+        for(var i=0; i<s.length; ++i){
+            res[i] = s[i];
+        }
+        for(var i=0; i<s.length; ++i){
+            var t = Math.floor(Math.random()*s.length);
+            var tmp = res[i];
+            res[i] = res[t];
+            res[t] = tmp;
+        }
+        return res;
+    }
+    function typoglycemia(s){
+        var res = [];
+        var words = s.split(" ");
+        for(var i=0; i<words.length; ++i){
+            if(words[i].length > 4){
+                var word = [];
+                word.push(words[i][0]);
+                word.push(shuffle(words[i].slice(1,words[i].length-1)).join(""));
+                word.push(words[i][words[i].length-1]);
+                res.push(word.join(""));
+            }else{
+                res.push(words[i]);
+            }
+        }
+        return res.join(" ");
+    }
+    var s = "I couldn't believe that I could actually " +
+    "understand what I was reading : the phenomenal power of the human mind .";
+    return typoglycemia(s);
 }
 
 function measureElapsedTime(func){
