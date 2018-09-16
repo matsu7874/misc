@@ -3,13 +3,13 @@
 # ~/.bash_completion 下記の内容を書くと補完が効くようになる。
 
 _except() {
-  # 配列を集合と見たときの差集合`a - b`を返す
+  # 文字列を集合と見たときの差集合`a - b`を返す
   local a b intersection difference
   a=$1
   b=$2
 
-  intersection=($(for item in ${a[@]} ${b[@]}; do echo "$item"; done | sort | uniq -d))
-  difference=($(for item in ${a[@]} ${intersection[@]}; do echo "$item"; done | sort | uniq -u))
+  intersection=($(for item in ${a} ${b}; do echo "$item"; done | sort | uniq -d))
+  difference=($(for item in ${a} ${intersection[@]}; do echo "$item"; done | sort | uniq -u))
   echo "${difference[@]}"
 }
 
