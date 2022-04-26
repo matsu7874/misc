@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<h1>アルバムの一覧</h1>
+    <ul>
+        {% for album_id in album_ids %}
+        <li><a href="/album/{{album_id}}">{{album_id}}</a></li>
+        {% endfor %}
+    </ul>
+<div>
+    <h2>アルバムを追加する</h2>
+    <form action="/album" method="post" enctype="application/x-www-form-urlencoded">
+        <input type="submit" value="アルバムを追加する" />
+    </form>
+
+</div>
+
+
+
+{% endblock content %}

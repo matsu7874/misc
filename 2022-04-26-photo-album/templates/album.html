@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<h1>album {{album_id}}</h1>
+<ul>
+    {% for photo_id in photo_ids %}
+    <li><img src="/images/{{album_id}}/{{photo_id}}" alt="" style="max-width: 300px;max-height: 300px;"></li>
+    {% endfor %}
+</ul>
+<div>
+    <h2>写真を追加する</h2>
+    <form action="/album/{{album_id}}/photo" method="POST" enctype="multipart/form-data">
+        <input type="file" multiple name="file" accept="image/png, image/jpg"/>
+        <button type="submit">写真を追加する</button>
+    </form>
+
+</div>
+
+<a href="/">一覧に戻る</a>
+{% endblock content %}
