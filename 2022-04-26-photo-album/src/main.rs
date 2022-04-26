@@ -35,11 +35,12 @@ fn get_filenames(glob: &str) -> anyhow::Result<Vec<u32>> {
                 .to_string_lossy()
                 .parse::<u32>()
                 .ok()
-                .unwrap(),
+                .unwrap_or(0)
         );
     }
     ids.sort_unstable();
-    Ok(ids)
+    // TODO: .gitkeepなどが0として入ってくるので消す。
+    Ok(ids.into_iter().filter(|x|*x>0).collect())
 }
 
 fn get_album_ids() -> anyhow::Result<Vec<u32>> {
@@ -141,6 +142,7 @@ async fn main() -> std::io::Result<()> {
             .service(upload_photo)
             .service(Files::new("/images", "static/albums/").prefer_utf8(true))
     })
+    .workers(4)
     .bind(("127.0.0.1", 8080))?
     .run()
     .await
